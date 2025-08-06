@@ -21,6 +21,6 @@ namespace CreditApprovalAPI.DTOs
        
         public DateTime? ReviewDate { get; set; }
 
-        public DateTime CreateDate { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }
