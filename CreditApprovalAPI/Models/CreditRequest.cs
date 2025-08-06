@@ -20,7 +20,7 @@ namespace CreditApprovalAPI.Models
 
         public CreditStatus Status { get; set; } = CreditStatus.Pending_Review;
 
-        public string? ApproverNamer { get; set; }
+        public string ReviewerName { get; set; }
 
         public DateTime? ReviewDate { get; set; }
 
