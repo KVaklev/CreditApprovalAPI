@@ -2,8 +2,8 @@
 using CreditApprovalAPI.Data;
 using CreditApprovalAPI.DTOs;
 using CreditApprovalAPI.Models;
+using CreditApprovalAPI.Services.Utilities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace CreditApprovalAPI.Services.Commands
 {
@@ -22,16 +22,11 @@ namespace CreditApprovalAPI.Services.Commands
         {
             var entity = _mapper.Map<CreditRequest>(request.CreditRequest);
 
-            // Generate unique RequestNumber e.g., CRE-20250806-0001
-            var datePart = DateTime.UtcNow.ToString("yyyyMMdd");
-            var count = await _context.CreditRequests.CountAsync(r => r.CreatedDate.Date == DateTime.UtcNow.Date, cancellationToken);
-            var requestNumber = $"CRE-{datePart}-{(count + 1).ToString("D4")}";
-            entity.RequestNumber = requestNumber;
+            entity.RequestNumber = await RequestNumberGenerator.GenerateRequestNumberAsync(_context, cancellationToken);
 
             _context.CreditRequests.Add(entity);
 
             await _context.SaveChangesAsync(cancellationToken);
-
 
             return _mapper.Map<CreditRequestReadDto>(entity);
         }
