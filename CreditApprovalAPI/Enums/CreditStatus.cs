@@ -2,10 +2,10 @@
 {
     public enum CreditStatus
     {
-        Review = 0,
+        Pending_Review = 0,
         Approved = 1,
         Rejected = 2
     }
 
-    
+
 }

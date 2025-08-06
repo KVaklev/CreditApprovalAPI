@@ -2,8 +2,9 @@
 {
     public enum CreditType
     {
-        Mortgage = 0,
-        Auto = 1,
-        Personal = 2
+        ToBeConfirmed = 0,
+        Mortgage = 1,
+        Auto = 2,
+        Personal = 3
     }
 }
