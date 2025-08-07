@@ -24,7 +24,7 @@ builder.Services.AddDbContext<CreditDbContext>(options =>
     options.UseInMemoryDatabase("CreditDb"));
 
 // Register AutoMapper
-builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddAutoMapper(typeof(Program));
 
 // Register MediatR
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());

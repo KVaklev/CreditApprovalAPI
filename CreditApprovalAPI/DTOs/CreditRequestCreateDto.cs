@@ -4,18 +4,41 @@ using CreditApprovalAPI.Models;
 
 namespace CreditApprovalAPI.DTOs
 {
+    /// <summary>
+    /// DTO for creating a new credit request.
+    /// </summary>
     public class CreditRequestCreateDto
     {
-        public string FullName { get; set; } 
+        /// <summary>
+        /// Full name of the applicant.
+        /// </summary>
+        public string FullName { get; set; }
 
-        public string Email { get; set; } 
+        /// <summary>
+        /// Email address of the applicant.
+        /// </summary>
+        public string Email { get; set; }
 
+        /// <summary>
+        /// Applicant's monthly income.
+        /// </summary>
         public decimal MonthlyIncome { get; set; }
 
+        /// <summary>
+        /// Requested credit amount.
+        /// </summary>
         public decimal CreditAmount { get; set; }
 
-        public CreditType CreditType { get; set; }
+        /// <summary>
+        /// Type of credit requested (e.g., Auto, Mortgage, Personal).
+        /// </summary>
+        public CreditType CreditType { get; set; }        
 
+
+        /// <summary>
+        /// Maps this DTO to the <see cref="CreditRequest"/> domain model.
+        /// </summary>
+        /// <param name="profile">AutoMapper profile to configure mapping.</param>
         public static void CreateMap(Profile profile)
         {
             profile.CreateMap<CreditRequestCreateDto, CreditRequest>()
