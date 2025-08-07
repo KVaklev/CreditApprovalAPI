@@ -98,6 +98,11 @@ namespace CreditApprovalAPI.Services
             if (entity == null)
                 return Result<CreditRequestReadDto>.Fail($"Credit request with ID {dto.Id} not found.");
 
+            if (entity.Status == CreditStatus.Approved || entity.Status == CreditStatus.Rejected)
+            {
+                return Result<CreditRequestReadDto>.Fail($"Credit request with ID {dto.Id} has already been reviewed and cannot be changed.");
+            }
+
             if (entity.CreditAmount > entity.MonthlyIncome * 20)
             {
                 entity.Status = CreditStatus.Rejected;
