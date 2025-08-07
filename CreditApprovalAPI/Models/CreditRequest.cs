@@ -51,7 +51,7 @@ namespace CreditApprovalAPI.Models
         /// <summary>
         /// Name of the reviewer who approved/rejected the request.
         /// </summary>
-        public string ReviewerName { get; set; }
+        public string? ReviewerName { get; set; }
 
         /// <summary>
         /// Date when the request was reviewed.

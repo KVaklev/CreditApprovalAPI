@@ -52,7 +52,7 @@ namespace CreditApprovalAPI.Controllers
         /// Retrieves all credit requests.
         /// </summary>
         /// <returns>HTTP 200 with a list of all credit requests.</returns>
-        [HttpGet]
+        [HttpGet("existing-requests")]
         public async Task<IActionResult> GetAll()
         {
             var result = await _mediator.Send(new CreditRequestGetAllQuery());

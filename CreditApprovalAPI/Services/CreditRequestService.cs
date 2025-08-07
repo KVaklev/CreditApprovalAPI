@@ -34,8 +34,16 @@ namespace CreditApprovalAPI.Services
         /// <returns>A result containing a collection of credit request DTOs.</returns>
         public async Task<Result<IEnumerable<CreditRequestReadDto>>> GetAllAsync(CancellationToken cancellationToken)
         {
+
             var entities = await _repository.GetAllAsync(cancellationToken);
+
             var dtos = _mapper.Map<IEnumerable<CreditRequestReadDto>>(entities);
+
+            if (!dtos.Any())
+            {
+                return Result<IEnumerable<CreditRequestReadDto>>.Ok(dtos, "No credit requests found.");
+            }
+
             return Result<IEnumerable<CreditRequestReadDto>>.Ok(dtos);
         }
 
@@ -89,6 +97,17 @@ namespace CreditApprovalAPI.Services
 
             if (entity == null)
                 return Result<CreditRequestReadDto>.Fail($"Credit request with ID {dto.Id} not found.");
+
+            if (entity.CreditAmount > entity.MonthlyIncome * 20)
+            {
+                entity.Status = CreditStatus.Rejected;
+                entity.ReviewerName = dto.ReviewerName;
+                entity.ReviewDate = DateTime.UtcNow;
+
+                await _repository.SaveChangesAsync(cancellationToken);
+
+                return Result<CreditRequestReadDto>.Fail("Credit amount exceeds 20 times monthly income - request rejected automatically.");
+            }
 
             entity.Status = dto.IsApproved ? CreditStatus.Approved : CreditStatus.Rejected;
 
