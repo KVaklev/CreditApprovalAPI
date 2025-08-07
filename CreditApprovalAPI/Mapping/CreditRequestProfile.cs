@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CreditApprovalAPI.DTOs;
-using CreditApprovalAPI.Models;
 using CreditApprovalAPI.Enums;
+using CreditApprovalAPI.Models;
 
 namespace CreditApprovalAPI.Mapping
 {

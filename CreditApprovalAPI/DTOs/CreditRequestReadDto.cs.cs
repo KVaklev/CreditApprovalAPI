@@ -3,7 +3,8 @@
 namespace CreditApprovalAPI.DTOs
 {    
     public class CreditRequestReadDto
-    {       
+    {
+        public Guid Id { get; set; }
 
         public string RequestNumber { get; set; } 
 
@@ -17,8 +18,10 @@ namespace CreditApprovalAPI.DTOs
 
         public CreditType CreditType { get; set; }
 
-        public CreditStatus Status { get; set; } 
-       
+        public CreditStatus Status { get; set; }
+
+        public string? ReviewerName { get; set; }
+
         public DateTime? ReviewDate { get; set; }
 
         public DateTime CreatedDate { get; set; }
