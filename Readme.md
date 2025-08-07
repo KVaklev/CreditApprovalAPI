@@ -43,7 +43,7 @@ This project is a backend API for processing and reviewing credit requests, buil
 - MediatR (CQRS pattern)
 - FluentValidation
 - Swagger / Swashbuckle (with XML comments)
-- Visual Studio 2022+
+- Visual Studio 2022
 
 ---
 
@@ -90,7 +90,7 @@ Use Swagger UI to:
 
 - `POST /api/CreditRequests` – Create/Submit a new credit request 
 - `GET /api/CreditRequests/{id}` – Retrieves a credit request by its unique identifier.
-- `GET /api/CreditRequests/existing-requests` – Retrieves all credit requests.
+- `GET /api/CreditRequests/existing-requests` – Retrieve all credit requests with optional filtering
 - `POST /api/CreditRequests/{id}/review` – Review (approve/reject) a request  
 
 
@@ -111,7 +111,8 @@ Each controller action has **XML documentation** visible in Swagger.
    - Attempt to review a non-existent or already reviewed request  
 
 3. **List Credit Requests**  
-   - Retrieve all credit requests - in-memory DB should be empty initially and then should display the created credit requests
+   - Retrieve all credit requests with no filters (should return all) - in-memory DB should be empty initially and then should display the created credit requests
+   - Retrieve credit requests filtered by status, credit type, or both
 
 4. **Data Integrity**  
    - Ensure once reviewed, requests cannot be modified  
