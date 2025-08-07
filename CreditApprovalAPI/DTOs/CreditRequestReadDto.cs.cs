@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CreditApprovalAPI.Enums;
 using CreditApprovalAPI.Models;
+using System.Text.Json.Serialization;
 
 namespace CreditApprovalAPI.DTOs
 {   
@@ -42,11 +43,13 @@ namespace CreditApprovalAPI.DTOs
         /// <summary>
         /// Type of credit requested.
         /// </summary>
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public CreditType CreditType { get; set; }
 
         /// <summary>
         /// Current status of the request.
         /// </summary>
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public CreditStatus Status { get; set; }
 
         /// <summary>

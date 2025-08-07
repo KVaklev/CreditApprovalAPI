@@ -24,11 +24,12 @@ namespace CreditApprovalAPI.Repositories
         /// <summary>
         /// Retrieves all credit requests from the database.
         /// </summary>
-        /// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
         /// <returns>A collection of all credit requests.</returns>
-        public async Task<IEnumerable<CreditRequest>> GetAllAsync(CancellationToken cancellationToken)
+        public IQueryable<CreditRequest> GetAll()
         {
-            return await _context.CreditRequests.ToListAsync(cancellationToken);
+            
+           return _context.CreditRequests.AsQueryable();
+           
         }
 
         /// <summary>

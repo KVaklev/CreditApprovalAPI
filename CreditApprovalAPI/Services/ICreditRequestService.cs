@@ -9,10 +9,10 @@ namespace CreditApprovalAPI.Services
     public interface ICreditRequestService
     {
         /// <summary>
-        /// Retrieves all existing credit requests.
+        /// Retrieves all existing credit requests, optionally filtered.
         /// </summary>
         /// <returns>A list of credit request read DTOs.</returns>
-        Task<Result<IEnumerable<CreditRequestReadDto>>> GetAllAsync(CancellationToken cancellationToken);
+        Task<Result<IEnumerable<CreditRequestReadDto>>> GetAllAsync(CancellationToken cancellationToken, CreditRequestFilterDto? filter = null);
 
         /// <summary>
         /// Retrieves a specific credit request by its ID.

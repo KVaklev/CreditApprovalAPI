@@ -1,6 +1,7 @@
 ﻿using CreditApprovalAPI.DTOs;
 using CreditApprovalAPI.Services.Commands;
 using CreditApprovalAPI.Services.Queries;
+using CreditApprovalAPI.Services.Utilities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +23,7 @@ namespace CreditApprovalAPI.Controllers
         public CreditRequestsController(IMediator mediator)
         {
             _mediator = mediator;
-        }
+        }        
 
         /// <summary>
         /// Creates a new credit request.
@@ -30,6 +31,8 @@ namespace CreditApprovalAPI.Controllers
         /// <param name="dto">The DTO containing credit request details.</param>
         /// <returns>HTTP 200 with result if successful; otherwise, HTTP 400 Bad Request.</returns>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<CreditRequestReadDto>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] CreditRequestCreateDto dto)
         {
             var result = await _mediator.Send(new CreditRequestCreateCommand(dto));
@@ -42,6 +45,8 @@ namespace CreditApprovalAPI.Controllers
         /// <param name="id">The unique ID of the credit request.</param>
         /// <returns>HTTP 200 with the credit request if found; otherwise, HTTP 404 Not Found.</returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<CreditRequestReadDto>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get(Guid id)
         {
             var result = await _mediator.Send(new CreditRequestGetByIdQuery(id));
@@ -49,13 +54,16 @@ namespace CreditApprovalAPI.Controllers
         }
 
         /// <summary>
-        /// Retrieves all credit requests.
+        /// Retrieves all credit requests, optionally filtered by status and credit type.
         /// </summary>
-        /// <returns>HTTP 200 with a list of all credit requests.</returns>
+        /// <param name="filter">Filter criteria.</param>
+        /// <returns>HTTP 200 with list of credit requests.</returns>
         [HttpGet("existing-requests")]
-        public async Task<IActionResult> GetAll()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<IEnumerable<CreditRequestReadDto>>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAll([FromQuery] CreditRequestFilterDto filter)
         {
-            var result = await _mediator.Send(new CreditRequestGetAllQuery());
+            var result = await _mediator.Send(new CreditRequestGetAllQuery(filter));
             return Ok(result);
         }
 
@@ -66,10 +74,12 @@ namespace CreditApprovalAPI.Controllers
         /// <param name="dto">The DTO containing review information.</param>
         /// <returns>HTTP 200 with updated credit request if successful; otherwise, HTTP 400 Bad Request.</returns>
         [HttpPost("{id}/review")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Result<CreditRequestReadDto>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Review(Guid id, [FromBody] CreditRequestReviewDto dto)
         {
             var result = await _mediator.Send(new CreditRequestReviewCommand(id, dto));
             return result.isSuccess ? Ok(result) : BadRequest(result);
-        }
+        }        
     }
 }

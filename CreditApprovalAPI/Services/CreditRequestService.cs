@@ -4,6 +4,7 @@ using CreditApprovalAPI.Enums;
 using CreditApprovalAPI.Models;
 using CreditApprovalAPI.Repository;
 using CreditApprovalAPI.Services.Utilities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CreditApprovalAPI.Services
 {
@@ -32,19 +33,28 @@ namespace CreditApprovalAPI.Services
         /// </summary>
         /// <param name="cancellationToken">A cancellation token to observe while waiting for the task to complete.</param>
         /// <returns>A result containing a collection of credit request DTOs.</returns>
-        public async Task<Result<IEnumerable<CreditRequestReadDto>>> GetAllAsync(CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<CreditRequestReadDto>>> GetAllAsync(CancellationToken cancellationToken, CreditRequestFilterDto? filter = null)
         {
+            var query =  _repository.GetAll();
 
-            var entities = await _repository.GetAllAsync(cancellationToken);
+            if (filter is not null)
+            {
+                if (filter.Status.HasValue) 
+
+                    query = query.Where(r => r.Status == filter.Status.Value);
+
+                if (filter.CreditType.HasValue)
+
+                    query = query.Where(r => r.CreditType == filter.CreditType.Value);
+            }
+
+            var entities = await query.ToListAsync(cancellationToken);
 
             var dtos = _mapper.Map<IEnumerable<CreditRequestReadDto>>(entities);
 
-            if (!dtos.Any())
-            {
-                return Result<IEnumerable<CreditRequestReadDto>>.Ok(dtos, "No credit requests found.");
-            }
-
-            return Result<IEnumerable<CreditRequestReadDto>>.Ok(dtos);
+            return dtos.Any()
+                        ? Result<IEnumerable<CreditRequestReadDto>>.Ok(dtos)
+                        : Result<IEnumerable<CreditRequestReadDto>>.Ok(dtos, "No credit requests found.");
         }
 
         /// <summary>

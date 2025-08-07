@@ -28,7 +28,7 @@ namespace CreditApprovalAPI.Services.Queries
         /// <returns>The result containing a collection of credit request DTOs.</returns>
         public async Task<Result<IEnumerable<CreditRequestReadDto>>> Handle(CreditRequestGetAllQuery request, CancellationToken cancellationToken)
         {
-            return await _service.GetAllAsync(cancellationToken);
+            return await _service.GetAllAsync(cancellationToken, request.Filter);
         }
     }
 }
