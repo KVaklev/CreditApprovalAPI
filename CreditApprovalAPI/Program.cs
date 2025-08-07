@@ -1,4 +1,5 @@
 using CreditApprovalAPI.Data;
+using CreditApprovalAPI.Mapping;
 using CreditApprovalAPI.Repositories;
 using CreditApprovalAPI.Repository;
 using CreditApprovalAPI.Services;
@@ -23,7 +24,7 @@ builder.Services.AddDbContext<CreditDbContext>(options =>
     options.UseInMemoryDatabase("CreditDb"));
 
 // Register AutoMapper
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 // Register MediatR
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());

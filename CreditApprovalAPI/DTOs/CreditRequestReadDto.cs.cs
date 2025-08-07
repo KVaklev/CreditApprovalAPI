@@ -1,4 +1,6 @@
-﻿using CreditApprovalAPI.Enums;
+﻿using AutoMapper;
+using CreditApprovalAPI.Enums;
+using CreditApprovalAPI.Models;
 
 namespace CreditApprovalAPI.DTOs
 {    
@@ -25,5 +27,10 @@ namespace CreditApprovalAPI.DTOs
         public DateTime? ReviewDate { get; set; }
 
         public DateTime CreatedDate { get; set; }
+
+        public static void CreateMap(Profile profile)
+        {
+            profile.CreateMap<CreditRequest, CreditRequestReadDto>();
+        }
     }
 }
