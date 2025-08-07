@@ -9,6 +9,7 @@ using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,13 @@ builder.Services.AddSwaggerGen(c =>
 // Add DbContext with In-Memory DB
 builder.Services.AddDbContext<CreditDbContext>(options =>
     options.UseInMemoryDatabase("CreditDb"));
+
+// Configure JSON serialization to convert enum values to their string representations
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 
 // Register AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));

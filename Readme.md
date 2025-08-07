@@ -88,23 +88,47 @@ Once cloned:
 
 Use Swagger UI to:
 
-- `POST /api/creditrequests` – Submit a credit request  
-- `POST /api/creditrequests/{id}/review` – Review (approve/reject) a request  
-- `GET /api/creditrequests` – List all requests
+- `POST /api/CreditRequests` – Create/Submit a new credit request 
+- `GET /api/CreditRequests/{id}` – Retrieves a credit request by its unique identifier.
+- `GET /api/CreditRequests/existing-requests` – Retrieves all credit requests.
+- `POST /api/CreditRequests/{id}/review` – Review (approve/reject) a request  
+
 
 Each controller action has **XML documentation** visible in Swagger.
 
 ---
 
-## 🤝 Assumptions
+## 🧪 5. Test Scenarios
+
+1. **Submit Credit Request**  
+   - Submit valid credit requests for each credit type (MORTGAGE, AUTO, PERSONAL)  
+   - Attempt to submit credit requests exceeding the allowed credit amount threshold  
+   - Submit requests with invalid emails or negative values (credit amount, monthly income)  
+
+2. **Review Credit Request**  
+   - Approve a pending credit request within allowed limits  
+   - Reject a pending credit request exceeding 20× monthly income  
+   - Attempt to review a non-existent or already reviewed request  
+
+3. **List Credit Requests**  
+   - Retrieve all credit requests - in-memory DB should be empty initially and then should display the created credit requests
+
+4. **Data Integrity**  
+   - Ensure once reviewed, requests cannot be modified  
+   - Validate unique request ID generation for new requests  
+
+---
+
+## 🤝 6. Assumptions
 
 - No authentication/authorization required
 - In-memory DB used for simplicity and easy testing
+- Enum values like CreditStatus and CreditType are serialized as strings ("APPROVED", "AUTO", etc.) instead of integers (0, 1, etc.) in API responses
 - Frontend is not part of this task
 
 ---
 
-## ✅ Optional Enhancements (future work)
+## ✅ 7. Optional Enhancements (future work)
 
 - Introduce layered project structure (e.g. Persistence, Application/Service, and Presentation layers) to improve scalability, separation of concerns, and maintainability as the API grows in size
 - Add authentication (e.g. JWT)
@@ -114,7 +138,7 @@ Each controller action has **XML documentation** visible in Swagger.
 
 ---
 
-## 📄 Folder Structure (Simplified)
+## 📄 8. Folder Structure (Simplified)
 CreditApprovalAPI/
 │
 ├── Controllers/
