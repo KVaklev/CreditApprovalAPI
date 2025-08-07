@@ -1,18 +1,14 @@
-﻿
-using CreditApprovalAPI.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using CreditApprovalAPI.Repository;
 
 namespace CreditApprovalAPI.Services.Utilities
 {
     public static class RequestNumberGenerator
     {
-        public static async Task<string> GenerateRequestNumberAsync(CreditDbContext context, CancellationToken cancellationToken)
+        public static async Task<string> GenerateRequestNumberAsync(ICreditRequestRepository repository, CancellationToken cancellationToken)
         {
             var datePart = DateTime.UtcNow.ToString("yyyyMMdd");
-            var count = await context.CreditRequests.CountAsync(
-                r => r.CreatedDate.Date == DateTime.UtcNow.Date,
-                cancellationToken
-            );
+
+            var count = await repository.CountTodayRequestsAsync(DateTime.UtcNow, cancellationToken);
 
             return $"CRE-{datePart}-{(count + 1).ToString("D4")}";
         }
