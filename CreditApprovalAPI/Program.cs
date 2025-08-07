@@ -1,4 +1,10 @@
 using CreditApprovalAPI.Data;
+using CreditApprovalAPI.Repositories;
+using CreditApprovalAPI.Repository;
+using CreditApprovalAPI.Services;
+using CreditApprovalAPI.Validators;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -21,6 +27,14 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 // Register MediatR
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+
+// FluentValidation
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<CreditRequestCreateValidator>();
+
+// Register Services and Repositories
+builder.Services.AddScoped<ICreditRequestRepository, CreditRequestRepository>();
+builder.Services.AddScoped<ICreditRequestService, CreditRequestService>();
 
 var app = builder.Build();
 
